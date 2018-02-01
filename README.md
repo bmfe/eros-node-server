@@ -18,7 +18,7 @@ git clone https://github.com/shawn-tangsc/eros-node-server
 ```
 前期准备
 ----------------------------------------
-+ 下列是mac下环境执行的语法，需要先安装[homeberw](https://brew.sh/)，linux下同理用相应的包管理工具下载。
++ 下列是mac下环境执行的语法，需要先安装[homebrew](https://brew.sh/)，linux下同理用相应的包管理工具下载。
 
 ```
 brew install bsdiff
