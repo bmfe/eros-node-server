@@ -80,7 +80,7 @@ module.exports = {
 
 ```
 eros build //生成全量包
-eros build -s //生成差分包
+eros build -d //生成差分包
 ```
 
 启动服务器
