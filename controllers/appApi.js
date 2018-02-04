@@ -71,6 +71,10 @@ const requestZip = ({res, apps, appName, platform, version, jsVersion, isDiff}) 
         }
     })
 }
+/**
+ * 通过app的名字和设备对应的版本号，返回相应的数据
+ *
+ * */
 const getNewestInfo = ({appName, platform, version}) => {
     let params = {
         appName
@@ -113,9 +117,6 @@ APPAPI.downloadIncrementZip = (req, res, next) => {
             return next(err);
         }
     })
-
-
-
 };
 
 APPAPI.add = (req, res, next) => {
