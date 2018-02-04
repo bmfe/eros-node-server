@@ -75,8 +75,8 @@ const getNewestInfo = ({appName, platform, version}) => {
     let params = {
         appName
     }
-    params[platform] = version
-    return Version.find(params).sort({ timestamp : 'desc'})
+    params[platform] = version;
+    return Version.find(params).sort({ timestamp : 'desc'});
 
 
 }
@@ -135,7 +135,7 @@ APPAPI.check = (req, res, next) => {
         checkParams = {
             appName,
         }
-
+    console.log('app>>>>>>>'+appName);
     if(jsVersion) checkParams['jsVersion'] = jsVersion
     checkParams[platform] = version
     Version.find(checkParams, (err, apps) =>{
