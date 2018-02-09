@@ -51,6 +51,7 @@ const requestZip = ({res, apps, appName, platform, version, jsVersion, isDiff}) 
             if(newests[0].jsVersion === jsVersion) {
                 // 存在 jsVersion 并且是最新
                 res.send(format({
+                    resCode:4000,
                     msg: "当前版本已是最新，不需要更新"
                 }))
             } else {
@@ -145,6 +146,14 @@ APPAPI.check = (req, res, next) => {
             res, apps, appName, platform, version, jsVersion, isDiff
         })
     })
+};
+APPAPI.test = (req, res, next) => {
+    res.setHeader("200", {'Content-Type': 'application/json;charset=UTF-8'});
+    return res.send({
+        resCode:'0',
+        msg:null,
+        data:'实际接口请求成功'
+    });
 };
 
 module.exports = APPAPI;
