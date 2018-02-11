@@ -16,13 +16,13 @@ const format = ({resCode = 0, msg = 'success', data = {}}) => {
     }
 }
 
-const requestZip = ({res, apps, appName, platform, version, jsVersion, isDiff}) => {
+const requestZip = ({res, apps, appName, platform, version, jsVersion, isDiff, next}) => {
     getNewestInfo({ appName, platform, version}).then(newests => {
         if (!newests || !newests.length) {
             console.log('error');
             var err = new Error('Not Found');
-            err.status = 404;
-            return next(err);
+            err.status = 500;
+            next(err);
         }
         if(isDiff == 0 || isDiff === 'false' || isDiff === false) {
             console.log('请求全量包');
@@ -57,15 +57,13 @@ const requestZip = ({res, apps, appName, platform, version, jsVersion, isDiff}) 
             } else {
                 // 存在 jsVersion 但不是最新
                 console.log('存在 jsVersion 但不是最新')
-                console.log(jsVersion);
-                console.log(`${newests[0].jsPath}/${jsVersion}.zip`)
                 res.send(format({
                     msg: "当前版本需要更新",
                     data: {
                         diff: true,
                         jsVersion: newests[0].jsVersion,
                         //有报错
-                        path: `${newests[0].jsPath}/${jsVersion}.zip`
+                        path: `${newests[0].jsPath}/${newests[0].jsVersion}.zip`
                     }
                 }))
             }
@@ -143,7 +141,7 @@ APPAPI.check = (req, res, next) => {
     Version.find(checkParams, (err, apps) =>{
         if (err) { return next(err) }
         requestZip({
-            res, apps, appName, platform, version, jsVersion, isDiff
+            res, apps, appName, platform, version, jsVersion, isDiff, next
         })
     })
 };
