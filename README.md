@@ -13,6 +13,7 @@
 下载
 ----------------------------------------
 使用git从[eros-node-server](https://github.com/shawn-tangsc/eros-node-server)主页下载项目
+
 ``` bash
 git clone https://github.com/shawn-tangsc/eros-node-server
 ```
@@ -20,14 +21,16 @@ git clone https://github.com/shawn-tangsc/eros-node-server
 ----------------------------------------
 + 下列是mac下环境执行的语法，需要先安装[homebrew](https://brew.sh/)，linux下同理用相应的包管理工具下载。
 
-```
-brew install bsdiff
-brew install bspatch
-```
+	```
+	brew install bsdiff
+	brew install bspatch
+	```
 
 
 初始化
 ----------------------------------------
+执行：
+
 ``` bash
 cd eros-node-server
 npm install
@@ -45,82 +48,86 @@ var DB_URL = 'mongodb://localhost/home'
 
 2.修改根目录中的config.js 中的zipPath！
 
-+ 下面这个路径配置的是你差分包和全量包里面的路径，可以自己去查一下
++ 下面这个路径配置的是你增量包和全量包里面的路径，可以自己去查一下
 
-``` bash
-module.exports = {
-    zipPath:<eros-template 内eros.dev.js中的 diff.pwd配置的路径>
-}
-```
+	``` bash
+	module.exports = {
+	    zipPath:<eros-template 内eros.dev.js中的 diff.pwd配置的路径>
+	}
+	```
 
 
 + 下面去修改你eros-template 里面的-----》eros.dev.js
-
-```
- 'diff': {
-        'pwd': <你希望差分包放的位置，这里需要注意，他会在你指定的目录下多新建一个目录>,
-        'proxy': `<本项目启动后的url或者ip>:3001/app/downloadIncrementZip`
-    },
-```
+	
+	```
+	 'diff': {
+	        'pwd': <你希望全量包放的位置，这里需要注意，他会在你指定的目录下多新建一个目录>,
+	        'proxy': `<本项目启动后的url或者ip>:3001/app/downloadIncrementZip`
+	    },
+	```
 
 + 下面去修改你eros-template 里面的-----》eros.native.js
 
-```
-'url': {
-        ...
-        'bundleUpdate': `<本项目启动后的url或者ip>:3001/app/check`,
-        ...
-    },
-```
+	```
+	'url': {
+	        ...
+	        'bundleUpdate': `<本项目启动后的url或者ip>:3001/app/check`,
+	        ...
+	    },
+	```
 
-生成差分包和全量包
+生成增量包和全量包
 ----------------------------------------
 
 + 在你的eros-template 目录根据实际情况执行，eros会将你的包放到你指定的目录下面
 
-```
-eros build //生成全量包
-eros build -d //生成差分包
-```
+	```
+	eros build //生成全量包
+	eros build -d //生成增量包
+	```
++ 这里要注意：并不会去保存增量包，每次有新版本后，你在执行
+	```
+	eros build -d 
+	```
+	
+	```
+	module.exports = {
+	   ...
+	    cliPath:'/Users/tangsicheng/myCode/my_github_code/private/home-project/home-app-eros/dist/js'
+	}
+	```
+去告诉本服务器，如果客户端请求的是差分包，应该去哪里找。
+
 
 启动服务器
 ----------------------------------------
-+ 启动mongodb的本地服务
-
-```
-mongod
-```
 
 + 在本项目的目录下，执行下列命令，这会给你在本地启动一个端口为3001的服务器
 
-```
-npm run start
-```
+	```
+	npm run start
+	```
 
++ 启动mongodb的本地服务
 
+	```
+	mongod
+	```
 
-将eros差分包或全量包信息保存到服务器
+将eros增量包信息保存到服务器
 ----------------------------------------
-+ 执行下列命令，可以让你将eros-template里面之前生成的差分差分包和全量包的信息（<your eros project>/dist/version.json）保存的服务器上面,
++ 执行下列命令，可以让你将eros-template里面之前生成的增量包和全量包的信息（<your eros project>/dist/version.json）保存的服务器上面,
 
-```
-eros build -s http://localhost:3001/app/add
-```
+	```
+	eros build -s http://localhost:3001/app/add
+	```
+	
 
 测试
 ----------------------------------------
 
 + 然后打开你eros项目中platform对应的移动端项目就可以直接在模拟器或真机上测试热更新了。。
 
-注意！！
--------------
-+ 请注意保证你本地native.js中的version 和你原生端项目中的实际版本一致，否则将找不到对应的数据
+---
+<center>&copy;2017 Shawn TangSiCheng</center>
 
-```
-	...
-    'version': {
-        'android': '1.0.0',
-        'iOS': '1.0.0'
-    },
-    ...
-```
