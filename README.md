@@ -48,7 +48,7 @@ var DB_URL = 'mongodb://localhost/home'
 
 2.修改根目录中的config.js 中的zipPath！
 
-+ 下面这个路径配置的是你增量包和全量包里面的路径，可以自己去查一下
++ 下面这个路径配置的是你差分包和全量包里面的路径，可以自己去查一下
 
 	``` bash
 	module.exports = {
@@ -76,19 +76,22 @@ var DB_URL = 'mongodb://localhost/home'
 	    },
 	```
 
-生成增量包和全量包
-----------------------------------------
+生成差分包和全量包
+---------
 
 + 在你的eros-template 目录根据实际情况执行，eros会将你的包放到你指定的目录下面
 
 	```
 	eros build //生成全量包
-	eros build -d //生成增量包
+	eros build -d //生成差分包
 	```
-+ 这里要注意：并不会去保存增量包，每次有新版本后，你在执行
++ 这里要注意：并不会去保存差分包信息到服务器上！
+	
+	每次有新版本后，你在执行
 	```
 	eros build -d 
 	```
+	的时候系统会自动去你配置的diff.pwd所指定的路径下，根据当前最新的包去生成和目标目录下的所有全量包之间的差分包，所以你需要在本项目根目录中config.js中配置
 	
 	```
 	module.exports = {
@@ -114,9 +117,9 @@ var DB_URL = 'mongodb://localhost/home'
 	mongod
 	```
 
-将eros增量包信息保存到服务器
-----------------------------------------
-+ 执行下列命令，可以让你将eros-template里面之前生成的增量包和全量包的信息（<your eros project>/dist/version.json）保存的服务器上面,
+将eros全量包信息保存到服务器
+----------------
++ 执行下列命令，可以让你将eros-template里面之前生成的全量包的信息（<your eros project>/dist/version.json）保存的服务器上面,
 
 	```
 	eros build -s http://localhost:3001/app/add
